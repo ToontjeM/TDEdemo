@@ -1,0 +1,5 @@
+epas:
+  vm_name: epas
+  mem_size: 2048
+  cpus: 2
+  box: generic/rocky9
