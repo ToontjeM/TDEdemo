@@ -41,7 +41,7 @@ All scripts are in the /vagrant directory on the server.
 | On both panes, run `select data_encryption_version from pg_control_init();` | |
 | | Show the encryption key using `\! cat $PGDATA/../datawithtde/pg_encryption/key.bin` |
 | On both panes, run `\i /vagrant/create_table_users.sql` | |
-- In both panes, run `select pg_relation_filepath('users');` - Copy the result on the clipboard - |
+| In both panes, run `select pg_relation_filepath('users');` - Copy the result on the clipboard - |
 | In both panes, drop down to the shell using `ctrl-d` | |
 | Run `cd && cd as17/datanotde && ls` |  Run `cd && cd as17/datanotde && ls` |
 | In both panes, run `hexdump -C <paste the result>` | |
