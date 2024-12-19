@@ -30,21 +30,20 @@ After provisioning, the hosts will have the current directory mounted in their f
 All scripts are in the /vagrant directory on the server.
 
 ## Demo flow
-- Open two panes in your terminal, SSH both into the EPAS server using `vagrant ssh` and become the enterprisedb user using: `sudo su - enterprisedb` and move to the `/vagrant` directory.
+- Open four panes in your terminal, SSH in all panes into the EPAS server using `vagrant ssh`.
+- In the top two panes, become the enterprisedb user using: `sudo su - enterprisedb` and move to the `/vagrant` directory.
 
-| Left pane | Right pane |
-| --- | --- |
-| Show the `create_cluster_no_tde.sh` script. | Show the `create_cluster_with_tde.sh` script. |
-| Create a normal database using `. ./create_cluster_no_tde.sh` | Create a normal database using `. ./create_cluster_with_tde.sh` |
-| Connect to the database using `psql -p 5444 edb` | Connect to the database using `psql -p 5445 edb` |
-|Show `postgresql.conf` using `\! less $PGDATA/../datanotde/postgresql.conf` | `\! less $PGDATA/../datawithtde/postgresql.conf` and search for `Data\ Encryp` |
-| On both panes, run `select data_encryption_version from pg_control_init();` | |
-| | Show the encryption key using `\! cat $PGDATA/../datawithtde/pg_encryption/key.bin` |
-| On both panes, run `\i /vagrant/create_table_users.sql` | |
-| In both panes, run `select pg_relation_filepath('users');` - Copy the result on the clipboard - |
-| In both panes, drop down to the shell using `ctrl-d` | |
-| Run `cd && cd as17/datanotde && ls` |  Run `cd && cd as17/datanotde && ls` |
-| In both panes, run `hexdump -C <paste the result>` | |
+| Left top pane | Right top pane | Left bottom | Right bottom |
+| --- | --- | --- | --- |
+|  |  | Show the `create_cluster_no_tde.sh` script. | Show the `create_cluster_with_tde.sh` script. |
+|  |  | Create a normal database using `. ./create_cluster_no_tde.sh` | Create a normal database using `. ./create_cluster_with_tde.sh` |
+| Connect to the database using `psql -p 5444 edb` | Connect to the database using `psql -p 5445 edb` | | |
+| | | Show `postgresql.conf` using `less $PGDATA/../datanotde/postgresql.conf` | `less $PGDATA/../datawithtde/postgresql.conf` and search for `Data\ Encryp` |
+| On both top panes, run `select data_encryption_version from pg_control_init();` | | | |
+| | | | Show the encryption key using `\! cat $PGDATA/../datawithtde/pg_encryption/key.bin` |
+| On both top panes, run `\i /vagrant/create_table_users.sql` | | | | 
+| In both top panes, run `select pg_relation_filepath('users');` - Copy the result on the clipboard - | | | 
+| | | In both bottom panes, run `hexdump -C <paste the result>` | |
 
 ## End of the demo
 Depovision the server using `deprovision.sh`.
