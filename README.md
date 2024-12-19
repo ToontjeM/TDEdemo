@@ -30,20 +30,22 @@ After provisioning, the hosts will have the current directory mounted in their f
 All scripts are in the /vagrant directory on the server.
 
 ## Demo flow
-- Open four panes in your terminal, SSH in all panes into the EPAS server using `vagrant ssh`.
-- In the top two panes, become the enterprisedb user using: `sudo su - enterprisedb` and move to the `/vagrant` directory.
+1. Open four panes in your terminal, SSH in all panes into the EPAS server using `vagrant ssh`.
+2. Top Left, Top Right: Become the enterprisedb user using: `sudo su - enterprisedb` and move to the `/vagrant` directory.
+3. Bottom Left: Show the `create_cluster_no_tde.sh` script. 
+4. Bottom Right: Show the `create_cluster_with_tde.sh` script. 
+5. Bootom Left: Create a normal database using `. ./create_cluster_no_tde.sh` 
+6. Bottom right: Create a normal database using `. ./create_cluster_with_tde.sh` 
+7. Top Left: Connect to the database using `psql -p 5444 edb` 
+8. Top right: Connect to the database using `psql -p 5445 edb` 
+9. Bottom Left: Show `postgresql.conf` using `less $PGDATA/../datanotde/postgresql.conf` and search for `Data\ Encryp` 
+10. Bottom right: Show `postgresql.conf` using `less $PGDATA/../datawithtde/postgresql.conf` and search for `Data\ Encryp` 
+11. In both top panes, run `select data_encryption_version from pg_control_init();` 
+12. Bottom right: Show the encryption key using `cat $PGDATA/../datawithtde/pg_encryption/key.bin` 
+13. In both top panes, run `\i /vagrant/create_table_users.sql`
+14. In both top panes, run `select pg_relation_filepath('users');` and  copy the result on the clipboard.
+15. In both bottom panes, run `hexdump -C <paste the result>` 
+16. Bottom Left: `pg_dump -p 5444 -U enterprisedb edb`
+17. Bottom Right: `pg_dump -p 5445 -U enterprisedb edb`
 
-| Left top pane | Right top pane | Left bottom | Right bottom |
-| --- | --- | --- | --- |
-|  |  | Show the `create_cluster_no_tde.sh` script. | Show the `create_cluster_with_tde.sh` script. |
-|  |  | Create a normal database using `. ./create_cluster_no_tde.sh` | Create a normal database using `. ./create_cluster_with_tde.sh` |
-| Connect to the database using `psql -p 5444 edb` | Connect to the database using `psql -p 5445 edb` | | |
-| | | Show `postgresql.conf` using `less $PGDATA/../datanotde/postgresql.conf` | `less $PGDATA/../datawithtde/postgresql.conf` and search for `Data\ Encryp` |
-| On both top panes, run `select data_encryption_version from pg_control_init();` | | | |
-| | | | Show the encryption key using `\! cat $PGDATA/../datawithtde/pg_encryption/key.bin` |
-| On both top panes, run `\i /vagrant/create_table_users.sql` | | | | 
-| In both top panes, run `select pg_relation_filepath('users');` - Copy the result on the clipboard - | | | 
-| | | In both bottom panes, run `hexdump -C <paste the result>` | |
-
-## End of the demo
 Depovision the server using `deprovision.sh`.
